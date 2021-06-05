@@ -1,4 +1,4 @@
-const {Input, Value, firstUnit, secondUnit} = require('./view')
+const {view, Options, Location} = require('./view')
 const {printTable} = require('console-table-printer')
 
 // Impure
@@ -11,12 +11,9 @@ async function app(state, update, view){
         console.log(title)
         printTable(table)
         // FORM (Ask user input)
-        const input = await Input(model)
-        const value = await Value(model)
-        const FUnit = await firstUnit(model)
-        const SUnit = await secondUnit(model)
-        //console.log(iB, iT)
-        const updatedModel = update(input.input ,value.input, FUnit.input, SUnit.input)
+        const option = await Options(model)
+        const location = await Location(model)
+        const updatedModel = update(option.input ,location.input)
         state = {
             ...state,
             model: updatedModel,
