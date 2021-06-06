@@ -4,60 +4,56 @@ function randomNumber(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 } 
+const database = []
 
-function update(option, location){
+function update(model, option, location){
     if (option === "Add City"){
-        return {
+        m = {
             Name: location,
             Temp: 50,
             Min: 0,
             Max:100,
         }
+        model.push(m)
     }
     else if (option=== "Update City"){
         const min = randomNumber(-30, 100)
         const max = randomNumber(min, 100)
         const temp = randomNumber(min, max)
-            return {
-                Name: location,
-                Min: min,
-                Max: max,
-                Temp: temp,
-            }
+
+        m = {
+            Name: location,
+            Min: min,
+            Max: max,
+            Temp: temp,
         }
-    else if (input === 'n'){
-        if (FUnit === "Celsius"){
-            if (SUnit === "Fahrenheit"){
-                transformed_value = C_to_F(value)
-            }
-            if (SUnit === "Kelvin"){
-                transformed_value = C_to_K(value)
-            }
-        }
-        if (FUnit === "Fahrenheit"){
-            if (SUnit === "Celsius"){
-                transformed_value = F_to_C(value)
-            }
-            if (SUnit === "Kelvin"){
-                transformed_value = F_to_K(value)
-            }
-        }
-        if (FUnit === "Kelvin"){
-            if (SUnit === "Celsius"){
-                transformed_value = K_to_C(value)
-            }
-            if (SUnit === "Fahrenheit"){
-                transformed_value = K_to_F(value)
-            }
-        }
-        return {
-            LeftValue: transformed_value,
-            LeftUnit: SUnit,
-            RightValue: value,
-            RightUnit: FUnit,
-            input: "Y",
+
+        for (var i = 0; i < model.length; i++){
+            if (model[i].Name == location){
+                model[i] = m
+                break
+            } 
         }
     }
+    else if (option === "Delete City"){
+        const index = model.indexOf(location)
+
+        if (index > -1) {
+            model.splice(index, 1);
+          }
+        
+        const new_model = []
+        for (var i = 0; i < model.length; i++){
+            if (model[i].Name !== location){
+                new_model.push(model[i]) 
+            }
+        }
+
+        return new_model
+        
+    }
+
+    return model
 }
 
 module.exports = {
