@@ -16,13 +16,17 @@ function getTitle(){
 }
 
 function getTable(model){
-    const Name = model.Name
-    const Temp = model.Temp
-    const Min = model.Min
-    const Max = model.Max
-    return [
-        {'name': Name, 'temp': Temp, "min": Min, "man": Max},
-    ]
+    const printing_list = []
+    for (var i = 0; i < model.length; i++){
+        var Name = model[i].Name
+        var Temp = model[i].Temp
+        var Min = model[i].Min
+        var Max = model[i].Max
+        var m = {'name': Name, 'temp': Temp, "min": Min, "man": Max}
+
+        printing_list.push(m)
+    }
+   return printing_list
 }
 
 function Location(model){
@@ -33,16 +37,23 @@ function Location(model){
             name: 'input',
             type: 'input',
             message: message,
-            //default: 'Y/n',
-            /*
+        
             validate: function(value){
-                if(value === 'Y' || value === "n"){
-                    return true
-                } else {
-                    return 'Enter either a "Y" or "n"'
+                if (parseInt(value)){
+                    return "La ciudad no puede ser un número. Intenta denuevo."
                 }
+                return true
             }
-            */
+                /*
+                for (var i = 0; i<model.length; i++){
+                    if(value === model[i].Name){
+                        return true
+                    }
+                }
+                return 'La ciudad que ingresaste no existe'
+                }
+                */
+            
         }
     ])
 }
