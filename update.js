@@ -8,6 +8,10 @@ const database = []
 
 function update(model, option, location){
     if (option === "Add City"){
+        if (model[0].Name === " "){
+            model.pop()
+        }
+
         m = {
             Name: location,
             Temp: 50,
