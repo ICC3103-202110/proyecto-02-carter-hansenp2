@@ -29,7 +29,7 @@ function getTable(model){
    return printing_list
 }
 
-function Location(model){
+function Add_Location(model){
     const input = model.input
     const message = 'Location? '
     return inquirer.prompt([
@@ -58,6 +58,31 @@ function Location(model){
     ])
 }
 
+function All_Locations(model){
+    const input = model
+    const choices = []
+    for (var i = 0; i< input.length; i++){
+        choices.push(input[i].Name)
+    }
+    return inquirer.prompt([
+        {
+            name: 'input',
+            type: 'list',
+            //default : option,
+            choices: choices,
+
+            validate: function(value){
+                if (parseInt(value)){
+                    return "La ciudad no puede ser un número. Intenta denuevo."
+                }
+                return true
+            }
+        }
+    ])
+}
+
+
+
 function Options(model){
     const {input} = model
     const message = 'Select an option: '
@@ -82,5 +107,6 @@ function view(model){
 module.exports = {
     view,
     Options, 
-    Location,
+    Add_Location,
+    All_Locations,
 }
