@@ -1,4 +1,4 @@
-const {view, Options, Add_Location, Update_Location, Delete_Location, All_Locations} = require('./view')
+const {view, Options, Locations} = require('./view')
 const {printTable} = require('console-table-printer')
 
 // Impure
@@ -12,21 +12,9 @@ async function app(state, update, view){
         printTable(table)
 
         //var updatedModel = model
-        var location = " "
         const option = await Options(model)
-        if(option.input == 'Add City'){
-            location = await Add_Location(model)
-        }
-        else if (option.input == 'Update City'){
-            location = await All_Locations(model)
-            //location = await Update_Location(model)
-        }
-        else if (option.input == 'Delete City'){
-            location = await All_Locations(model)
-            //location = await Delete_Location(model)
-        }
-
-        const updatedModel = update(model, option.input ,location.input)
+        const location = await Locations(model, option.input)
+        const updatedModel = await update(model, option.input ,location.input)
         state = {
             ...state,
             model: updatedModel,

@@ -22,66 +22,67 @@ function getTable(model){
         var Temp = model[i].Temp
         var Min = model[i].Min
         var Max = model[i].Max
-        var m = {'name': Name, 'temp': Temp, "min": Min, "man": Max}
+        var m = {'name': Name, 'temp': Temp, "min": Min, "max": Max}
 
         printing_list.push(m)
     }
    return printing_list
 }
 
-function Add_Location(model){
-    const input = model.input
-    const message = 'Location? '
-    return inquirer.prompt([
-        {
-            name: 'input',
-            type: 'input',
-            message: message,
-        
-            validate: function(value){
-                if (parseInt(value)){
-                    return "La ciudad no puede ser un número. Intenta denuevo."
-                }
-                return true
-            }
-                /*
-                for (var i = 0; i<model.length; i++){
-                    if(value === model[i].Name){
-                        return true
-                    }
-                }
-                return 'La ciudad que ingresaste no existe'
-                }
-                */
+function Locations(model, option){
+    const input = model;
+    var m
+    if (option === 'Add City'){
+        m= 'Location?'
+        return inquirer.prompt([
+            {
+                name: 'input',
+                type: 'input',
+                default: m,
+                message: m,
             
-        }
-    ])
-}
-
-function All_Locations(model){
-    const input = model
-    const choices = []
-    for (var i = 0; i< input.length; i++){
-        choices.push(input[i].Name)
-    }
-    return inquirer.prompt([
-        {
-            name: 'input',
-            type: 'list',
-            //default : option,
-            choices: choices,
-
-            validate: function(value){
-                if (parseInt(value)){
-                    return "La ciudad no puede ser un número. Intenta denuevo."
+                validate: function(value){
+                    if (parseInt(value)){
+                        return "La ciudad no puede ser un número. Intenta denuevo."
+                    }
+                    return true
                 }
-                return true
+                    /*
+                    for (var i = 0; i<model.length; i++){
+                        if(value === model[i].Name){
+                            return true
+                        }
+                    }
+                    return 'La ciudad que ingresaste no existe'
+                    }
+                    */
+                
             }
+        ])
+    }
+    else {
+        m = option
+        const choices = []
+        for (var i = 0; i< input.length; i++){
+            choices.push(input[i].Name)
         }
-    ])
+        return inquirer.prompt([
+            {
+                name: 'input',
+                type: 'list',
+                default : m,
+                message : m,
+                choices: choices,
+                validate: function(value){
+                    if (parseInt(value)){
+                        return "La ciudad no puede ser un número. Intenta denuevo."
+                    }
+                    return true
+                }
+            }
+        ])
+    }
 }
-
-
 
 function Options(model){
     const {input} = model
@@ -107,6 +108,5 @@ function view(model){
 module.exports = {
     view,
     Options, 
-    Add_Location,
-    All_Locations,
+    Locations,
 }

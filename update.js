@@ -7,107 +7,44 @@ function randomNumber(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 } 
-const database = []
 
-/*
-function getTemp(location){
-    const url = "http://api.openweathermap.org/data/2.5/weather?q="+location+"&appid=349564031cddd40d3d10cd1f6ab39d82&units=metric"
-    axios.get(url)
-        .then(function (response) {
-            // handle success
-            return response.data.main.temp
-        })
-        .catch(function (error) {
-            // handle error
-            console.log("\nHa habido un error al acceder a la API");
-        })
-        .then(function () {
-            // always executed
-        });
-}
-
-function getTempMin(location){
-    const url = "http://api.openweathermap.org/data/2.5/weather?q="+location+"&appid=349564031cddd40d3d10cd1f6ab39d82&units=metric"
-    axios.get(url)
-        .then(function (response) {
-            // handle success
-            return response.data.main.temp_min
-        })
-        .catch(function (error) {
-            // handle error
-            console.log("\nHa habido un error al acceder a la API");
-        })
-        .then(function () {
-            // always executed
-        });
-}
-
-function getTempMax(location){
-    const url = "http://api.openweathermap.org/data/2.5/weather?q="+location+"&appid=349564031cddd40d3d10cd1f6ab39d82&units=metric"
-    axios.get(url)
-        .then(function (response) {
-            // handle success
-            return response.data.main.temp_max
-        })
-        .catch(function (error) {
-            // handle error
-            console.log("\nHa habido un error al acceder a la API");
-        })
-        .then(function () {
-            // always executed
-        });
-}
-*/
 async function getTemp(location) {
     const url = "http://api.openweathermap.org/data/2.5/weather?q="+location+"&appid=349564031cddd40d3d10cd1f6ab39d82&units=metric"
+
+    const datos =[]
     try {
         const response = await axios.get(url);
-        return response.data.main.temp;
+        datos[0] = response.data.main.temp; datos[1] = response.data.main.temp_min;
+        datos[2] = response.data.main.temp_max;
+        return datos;
     } catch (error) {
       console.error("\nHa habido un error contactando a la API");
     }
   }
 
-async function getTempMax(location) {
-    const url = "http://api.openweathermap.org/data/2.5/weather?q="+location+"&appid=349564031cddd40d3d10cd1f6ab39d82&units=metric"
-    try {
-        const response = await axios.get(url);
-        return response.data.main.temp_max;
-    } catch (error) {
-        console.error("Ha habido un error contactando a la API");
-    }
-}
+async function update(model, option, location){
 
-async function getTempMin(location) {
-    const url = "http://api.openweathermap.org/data/2.5/weather?q="+location+"&appid=349564031cddd40d3d10cd1f6ab39d82&units=metric"
-    try {
-        const response = await axios.get(url);
-        return response.data.main.temp_min;
-    } catch (error) {
-        console.error("Ha habido un error contactando a la API");
-    }
-}
-
-function update(model, option, location){
     if (option === 'Add City'){
+        datos = await getTemp(location)
         if (model[0].Name === " "){
             model.pop()
         }
         m = {
             Name: location,
-            Temp: getTemp(location),
-            Min: getTempMin(location),
-            Max: getTempMax(location),
+            Temp: datos[0],
+            Min: datos[1],
+            Max: datos[2],
         }
         model.push(m)
         return model
     }
     else if (option=== "Update City"){ 
+        datos = await getTemp(location)
         m = {
             Name: location,
-            Min: getTempMin(location),
-            Max: getTempMax(location),
-            Temp: getTemp(location),
+            Temp: datos[0],
+            Min: datos[1],
+            Max: datos[2],
         }
 
         for (var i = 0; i < model.length; i++){
